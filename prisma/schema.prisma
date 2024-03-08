@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id        Int       @id @default(autoincrement())
+  title     String
+  author    String
+  genre     String
+  publisher String
+  createdAt DateTime  @default(now())
+  UpdatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+  price     Int
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  role         Role      @default(USER)
+  profileViews String?
+  createdAt    DateTime  @default(now())
+  UpdatedAt    DateTime? @updatedAt
+  verifiedAt   DateTime?
+  deletedAt    DateTime?
+  coins        BigInt?
+  posts        Post[]
+  profile      Profile?
+}
+
+model Post {
+  id         Int        @id @default(autoincrement())
+  title      String     @db.VarChar(255)
+  slug       String     @db.VarChar(255)
+  content    String
+  createdAt  DateTime   @default(now())
+  published  Boolean    @default(false)
+  updatedAt  DateTime?  @updatedAt
+  deletedAt  DateTime?
+  comments   Json?
+  userId     String
+  views      Int        @default(0)
+  likes      Int        @default(0)
+  author     User       @relation(fields: [userId], references: [id])
+  categories Category[] @relation("CategoryToPost")
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  description String?
+  body        String
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Profile {
+  id      Int     @id @default(autoincrement())
+  bio     String?
+  city    String?
+  country String?
+  userId  String  @unique
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[] @relation("CategoryToPost")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
