@@ -37,7 +37,7 @@ model User {
 model Post {
   id         Int        @id @default(autoincrement())
   title      String     @db.VarChar(255)
-  slug       String     @db.VarChar(255)
+  slug       String     @db.VarChar(255) @unique
   content    String
   createdAt  DateTime   @default(now())
   published  Boolean    @default(false)

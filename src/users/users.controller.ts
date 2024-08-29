@@ -17,6 +17,18 @@ import { ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  async getAllUsers() {
+    return this.usersService.getUsers();
+  }
+
+  @Delete(':chatId')
+  async deleteUser(@Param('chatId') chatId: number) {
+    const deletedUser = await this.usersService.deleteUser(chatId);
+    // if (deletedUser) return { message: 'User deleted successfully' };
+    // throw new NotFoundException('User not found');
+  }
+
   @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.usersService.create(createUserDto);
