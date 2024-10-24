@@ -9,10 +9,19 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { AdminModule } from './admin/admin.module';
+import { AdminController } from './admin/admin.controller';
+import { AdminService } from './admin/admin.service';
+import { config } from 'dotenv';
+import { TelegramModule } from './telegram/telegram.module';
+
+config();
 
 @Module({
   imports: [
+    AdminModule,
     DatabaseModule,
+    // TelegramModule,
     AuthModule,
     ProductsModule,
     UsersModule,
@@ -40,9 +49,11 @@ import { ConfigModule } from '@nestjs/config';
       },
     ]),
   ],
-  controllers: [AppController],
+
+  controllers: [AppController, AdminController],
   providers: [
     AppService,
+    AdminService,
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,

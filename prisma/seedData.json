@@ -1,0 +1,78 @@
+{
+	"users": [
+		{
+			"email": "alice@prisma.io",
+			"name": "Alice"
+		},
+		{
+			"email": "bob@prisma.io",
+			"name": "Bob"
+		},
+		{
+			"email": "charlie@prisma.io",
+			"name": "Charlie"
+		},
+		{
+			"email": "dave@prisma.io",
+			"name": "Dave"
+		}
+	],
+	"posts": [
+		{
+			"title": "Check out Prisma with Next.js",
+			"content": "https://www.prisma.io/nextjs",
+			"published": true,
+			"slug": "check-out-prisma-with-nextjs"
+		},
+		{
+			"title": "Prisma Adds Support for MongoDB",
+			"content": "Support for MongoDB has been one of the most requested features since the initial release of...",
+			"published": false,
+			"slug": "prisma-adds-support-for-mongodb"
+		},
+		{
+			"title": "What's new in Prisma? (Q1/22)",
+			"content": "Our engineers have been working hard, issuing new releases with many improvements...",
+			"published": true,
+			"slug": "whats-new-in-prisma-q1-22"
+		},
+		{
+			"title": "Follow Prisma on Twitter",
+			"content": "https://twitter.com/prisma",
+			"published": true,
+			"slug": "follow-prisma-on-twitter"
+		},
+		{
+			"title": "Follow Nexus on Twitter",
+			"content": "https://twitter.com/nexusgql",
+			"published": true,
+			"slug": "follow-nexus-on-twitter"
+		},
+		{
+			"title": "Understanding Prisma",
+			"content": "Prisma is a next-generation ORM...",
+			"published": true,
+			"slug": "understanding-prisma"
+		},
+		{
+			"title": "Getting Started with Prisma",
+			"content": "This guide will help you get started with Prisma...",
+			"published": true,
+			"slug": "getting-started-with-prisma"
+		}
+	],
+	"comments": [
+		{
+			"content": "Great post!"
+		},
+		{
+			"content": "Very informative!"
+		},
+		{
+			"content": "Thanks for sharing!"
+		},
+		{
+			"content": "Awesome!"
+		}
+	]
+}

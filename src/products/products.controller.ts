@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Products')
