@@ -62,6 +62,7 @@ COPY . /usr/src/app/
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
     pnpm install --prod && pnpm run build
 
+RUN ls -la /usr/src/app/dist/main.js
 ###################
 # PRODUCTION
 ###################
@@ -77,3 +78,4 @@ COPY ecosystem.config.js /usr/src/app/
 COPY --from=build /usr/src/app/node_modules /usr/src/app/node_modules
 COPY --from=build /usr/src/app/dist /usr/src/app/dist
 RUN ls -a /usr/src/app/dist/
+
