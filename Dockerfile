@@ -60,9 +60,12 @@ COPY . /usr/src/app/
 
 # Run the build command to compile the app
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
-    pnpm install --prod && pnpm run build
+    pnpm install --prod
 
-RUN ls -la /usr/src/app/dist/main.js
+RUN pnpm build
+
+# Debug: Check if `dist` exists
+RUN ls -la /usr/src/app/dist || echo "dist folder not found after build"
 ###################
 # PRODUCTION
 ###################
@@ -72,10 +75,11 @@ FROM base As production
 ENV NODE_ENV=production
 
 # Copy your PM2 ecosystem file to the container
-COPY ecosystem.config.js /usr/src/app/
-
 # Copy the bundled code from the build stage to the production image
+COPY ecosystem.config.js /usr/src/app/
 COPY --from=build /usr/src/app/node_modules /usr/src/app/node_modules
 COPY --from=build /usr/src/app/dist /usr/src/app/dist
-RUN ls -a /usr/src/app/dist/
+
+# Final check if `dist` was copied correctly
+RUN ls -la /usr/src/app/dist/
 
