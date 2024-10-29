@@ -81,5 +81,5 @@ COPY --from=build /usr/src/app/node_modules /usr/src/app/node_modules
 COPY --from=build /usr/src/app/dist /usr/src/app/dist
 
 # Final check if `dist` was copied correctly
-RUN ls -la /usr/src/app/dist/main.js || echo "dist folder not found after copy"
+RUN ls -la /usr/src/app/dist/main.js || echo "main.js folder not found"
 RUN sleep infinity
