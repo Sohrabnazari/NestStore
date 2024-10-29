@@ -19,6 +19,7 @@ RUN pnpm config set registry https://registry.npmmirror.com
 
 # Set working directory
 WORKDIR /usr/src/app
+RUN chmod -R 755 /usr/src/app
 
 # Install pm2 globally to manage the application process
 # RUN pnpm add --global pm2
@@ -32,9 +33,6 @@ FROM base AS development
 COPY package*.json pnpm-lock.yaml /usr/src/app/
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
     pnpm install
-
-# Verify that node_modules and prisma directory exists
-RUN ls -la /usr/src/app/node_modules
 
 COPY prisma /usr/src/app/prisma
 RUN ls -la /usr/src/app/prisma
@@ -60,12 +58,12 @@ COPY . /usr/src/app/
 
 # Run the build command to compile the app
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
-    pnpm install --prod
+    pnpm install --prod  --frozen-lockfile
 
-RUN pnpm build
+RUN pnpm build 
 
 # Debug: Check if `dist` exists
-RUN ls -la /usr/src/app/dist || echo "dist folder not found after build"
+RUN ls -la /usr/src/app/dist/main.js || echo "main.js folder not found"
 ###################
 # PRODUCTION
 ###################
