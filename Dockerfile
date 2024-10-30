@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 RUN chmod -R 755 /usr/src/app
 
 # Install pm2 globally to manage the application process
-# RUN pnpm add --global pm2
+RUN pnpm add --global pm2
 
 ###################
 # BUILD FOR LOCAL DEVELOPMENT
@@ -80,3 +80,6 @@ COPY --from=build /usr/src/app/dist /usr/src/app/dist
 
 # Final check if `dist` was copied correctly
 RUN ls -la /usr/src/app/dist/main.js || echo "main.js folder not found"
+
+# Set CMD to start the application with PM2 in production mode
+CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
