@@ -2,20 +2,26 @@ version: '3.8'
 
 services:
   app:
+    image: app:latest
+    environment:
+      DATABASE_URL: '${DATABASE_URL}'
     build:
       context: .
       dockerfile: ./Dockerfile
       target: production
-    image: app:latest
-    environment:
-      DATABASE_URL: '${DATABASE_URL}'
     volumes:
       - app_storage:/usr/src/app
     ports:
-      - '3000:3000' # internal port, not exposed to host
+      - '3000' # internal port, not exposed to host
     depends_on:
       - redis
       - postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:3000/api || exit 1']
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # nginx:
   #   image: nginx:latest
@@ -25,9 +31,15 @@ services:
   #     - ./nginx.conf:/etc/nginx/nginx.conf # Bind mount your custom nginx.conf
   #   depends_on:
   #     - app # Wait for the app to start before starting nginx
+  #   healthcheck:
+  #     test: ['CMD-SHELL', 'curl -f http://localhost || exit 1']
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
@@ -37,6 +49,12 @@ services:
       - pg_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   redis:
     image: redis:alpine
@@ -44,6 +62,12 @@ services:
       - 6379:6379
     volumes:
       - redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   pgadmin:
     image: dpage/pgadmin4
@@ -52,6 +76,12 @@ services:
       PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD}'
     ports:
       - '5050:80'
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:80 || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 volumes:
   app_storage:
