@@ -24,6 +24,7 @@ services:
           'CMD-SHELL',
           "psql ${DATABASE_URL} -c 'SELECT 1' && curl -f http://localhost:3000/api || exit 1",
         ]
+      start_period: 30s
       interval: 10s
       timeout: 5s
       retries: 3
