@@ -29,6 +29,10 @@ RUN pnpm add --global pm2
 ###################
 FROM base AS development
 
+# Environment variables must be present at build time
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 # Copy package files and install dependencies
 COPY package*.json pnpm-lock.yaml /usr/src/app/
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
@@ -60,7 +64,7 @@ COPY . /usr/src/app/
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
     pnpm install --prod  --frozen-lockfile
 
-RUN pnpm build 
+RUN pnpm build
 
 # Debug: Check if `dist` exists
 RUN ls -la /usr/src/app/dist/main.js || echo "main.js folder not found"
