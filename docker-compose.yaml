@@ -19,16 +19,13 @@ services:
     ports:
       - '3000' # internal port, not exposed to host
     healthcheck:
-      test: ['CMD-SHELL', "psql ${DATABASE_URL} -c 'SELECT 1' || exit 1"]
+      test:
+        [
+          'CMD-SHELL',
+          "psql ${DATABASE_URL} -c 'SELECT 1' && curl -f http://localhost:3000/api || exit 1",
+        ]
       interval: 10s
       timeout: 5s
-      retries: 3
-    # Additional HTTP health check
-    extra_healthcheck:
-      test: ['CMD-SHELL', 'curl -f http://localhost:3000/api || exit 1']
-      start_period: 30s
-      interval: 20s
-      timeout: 10s
       retries: 3
 
   # nginx:
