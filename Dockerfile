@@ -60,11 +60,11 @@ COPY package*.json pnpm-lock.yaml /usr/src/app/
 COPY --from=development /usr/src/app/node_modules /usr/src/app/node_modules
 COPY . /usr/src/app/
 
-# Run the build command to compile the app
+RUN pnpm build
+
+# Optional: Reinstall only production dependencies to optimize image size
 RUN --mount=type=cache,target=/usr/src/app/.pnpm-store \
     pnpm install --prod  --frozen-lockfile
-
-RUN pnpm build
 
 # Debug: Check if `dist` exists
 RUN ls -la /usr/src/app/dist/main.js || echo "main.js folder not found"
