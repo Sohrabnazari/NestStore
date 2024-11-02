@@ -14,10 +14,10 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      database:
+      postgres:
         condition: service_healthy
     ports:
-      - '3000' # internal port, not exposed to host
+      - '3000:3000' # internal port, not exposed to host
     healthcheck:
       test:
         [
@@ -44,7 +44,7 @@ services:
   #     retries: 3
   #     start_period: 40s
 
-  database:
+  postgres:
     image: postgres:17-alpine
     restart: always
     environment:
